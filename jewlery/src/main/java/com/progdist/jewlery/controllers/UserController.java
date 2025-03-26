@@ -21,8 +21,8 @@ public class UserController {
     private final UserService service;
 
     @GetMapping()
-    public List<User> getCategories() {
-        return service.getCategories();
+    public List<User> getUsers() {
+        return service.getUsers();
     }
 
     @GetMapping("{id}")

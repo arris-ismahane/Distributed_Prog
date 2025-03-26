@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class JewleryService {
 
-    public List<Jewlery> getCategories() {
+    public List<Jewlery> getJewleries() {
         return List.of();
     }
 

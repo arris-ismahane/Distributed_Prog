@@ -21,8 +21,8 @@ public class JewleryController {
     private final JewleryService service;
 
     @GetMapping()
-    public List<Jewlery> getCategories() {
-        return service.getCategories();
+    public List<Jewlery> getJewleries() {
+        return service.getJewleries();
     }
 
     @GetMapping("{id}")
