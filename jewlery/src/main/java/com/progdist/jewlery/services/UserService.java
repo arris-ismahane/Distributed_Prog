@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserService {
 
-    public List<User> getUsers() {
+    public List<User> getCategories() {
         return List.of();
     }
 
