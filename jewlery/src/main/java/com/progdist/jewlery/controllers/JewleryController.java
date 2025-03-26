@@ -11,16 +11,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 
-@RestController("api/jewleries")
+@RestController
+@RequestMapping("/api/jewleries")
 @RequiredArgsConstructor
 public class JewleryController {
     private final JewleryService service;
 
-    @GetMapping()
+    @GetMapping
     public List<Jewlery> getJewleries() {
         return service.getJewleries();
     }
