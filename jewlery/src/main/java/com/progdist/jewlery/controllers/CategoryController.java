@@ -1,6 +1,7 @@
 package com.progdist.jewlery.controllers;
 
 import com.progdist.jewlery.model.Category;
+import com.progdist.jewlery.model.inputs.CategoryInput;
 import com.progdist.jewlery.services.CategoryService;
 
 import java.util.List;
@@ -38,12 +39,12 @@ public class CategoryController {
     }
 
     @PostMapping("create")
-    public Category createCategory(@RequestBody Category input) {
+    public Category createCategory(@RequestBody CategoryInput input) {
         return service.createCategory(input);
     }    
     
-    @PutMapping("update")
-    public Category updateCategory(@RequestBody Category input) {
-        return service.updateCategory(input);
+    @PutMapping("update/{id}")
+    public Category updateCategory(@PathVariable long id,@RequestBody CategoryInput input) {
+        return service.updateCategory(id, input);
     }
 }

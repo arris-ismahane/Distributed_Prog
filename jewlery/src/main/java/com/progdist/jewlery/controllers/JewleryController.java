@@ -1,6 +1,7 @@
 package com.progdist.jewlery.controllers;
 
 import com.progdist.jewlery.model.Jewlery;
+import com.progdist.jewlery.model.inputs.JewleryInput;
 import com.progdist.jewlery.services.JewleryService;
 
 import java.util.List;
@@ -38,12 +39,12 @@ public class JewleryController {
     }
 
     @PostMapping("create")
-    public Jewlery createJewlery(@RequestBody Jewlery input) {
+    public Jewlery createJewlery(@RequestBody JewleryInput input) {
         return service.createJewlery(input);
     }    
     
-    @PutMapping("update")
-    public Jewlery updateJewlery(@RequestBody Jewlery input) {
-        return service.updateJewlery(input);
+    @PutMapping("update/{id}")
+    public Jewlery updateJewlery(@PathVariable long id, @RequestBody JewleryInput input) {
+        return service.updateJewlery(id, input);
     }
 }
