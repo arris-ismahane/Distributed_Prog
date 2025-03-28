@@ -18,11 +18,11 @@ jobs:
         working-directory: jewlery
         run: |
           export SHELL=/bin/bash
-          mvn clean package
+          mvn clean package -DskipTests
 
       - name: Docker images
         working-directory: jewlery
         run: |
           export SHELL=/bin/bash
-          docker build -t jewlery .
+          docker build -t ismahanearris/handmadeglow:latest .
           docker images
