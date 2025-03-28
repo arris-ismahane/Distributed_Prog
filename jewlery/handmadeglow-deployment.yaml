@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: handmadeglow-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: handmadeglow
+  template:
+    metadata:
+      labels:
+        app: handmadeglow
+    spec:
+      containers:
+      - name: handmadeglow
+        image: ismahanearris/handmadeglow:latest
+        env:
+        - name: SPRING_DATASOURCE_URL
+          value: "jdbc:postgresql://postgres-service:5432/handmadeglow"
+        - name: SPRING_DATASOURCE_USERNAME
+          value: "emperia"
+        - name: SPRING_DATASOURCE_PASSWORD
+          value: "pass_emperia"
+        ports:
+        - containerPort: 8080
