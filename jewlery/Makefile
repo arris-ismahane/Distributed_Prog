@@ -6,13 +6,18 @@ MINIKUBE_PATH = minikube
 MINIKUBE_HANDMADEGLOW_DEPLOYMENT = $(MINIKUBE_PATH)/handmadeglow-deployment.yaml
 MINIKUBE_POSTGRES_DEPLOYMENT = $(MINIKUBE_PATH)/postgres-deployment.yaml
 MINIKUBE_SERVICES = $(MINIKUBE_PATH)/postgres-service.yaml
+MINIKUBE_HANDMADEGLOW_SERVICES = $(MINIKUBE_PATH)/handmadeglow-service.yaml
 MINIKUBE_PVC = $(MINIKUBE_PATH)/postgres-pvc.yaml
 MINIKUBE_IP = $(shell minikube ip)
 SERVICE_PORT = 8080
 
 # Default target
 .PHONY: all
-all: build push deploy
+all: clean build push deploy
+
+.PHONY: clean
+clean:
+	mvn clean package
 
 # Step 1: Build the Docker image
 .PHONY: build
@@ -30,6 +35,7 @@ deploy:
 	# Apply Postgres PVC and Service first
 	kubectl apply -f $(MINIKUBE_PVC)
 	kubectl apply -f $(MINIKUBE_SERVICES)
+	kubectl apply -f $(MINIKUBE_HANDMADEGLOW_SERVICES)
 
 	# Apply the Postgres and HandmadeGlow deployments individually
 	kubectl apply -f $(MINIKUBE_POSTGRES_DEPLOYMENT)
@@ -47,4 +53,4 @@ deploy:
 access:
 	# Expose the service URL
 	@echo "Access the app at http://$(MINIKUBE_IP):$(SERVICE_PORT)"
-	minikube service handmadeglow
+	minikube service handmadeglow-service
