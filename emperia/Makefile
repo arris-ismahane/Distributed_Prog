@@ -35,6 +35,7 @@ deploy:
 	kubectl apply -f $(MINIKUBE_DEPLOYMENT)
 
 	# Wait for the deployment rollout to complete
+	kubectl rollout restart deployment/handmadeglow-deployment
 	kubectl rollout status deployment/emperia-deployment
 
 	# Check the status of the services
