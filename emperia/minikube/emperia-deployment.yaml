@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: emperia-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: emperia
+  template:
+    metadata:
+      labels:
+        app: emperia
+    spec:
+      containers:
+      - name: emperia
+        image: ismahanearris/emperia_api:latest
+        imagePullPolicy: Always
