@@ -18,6 +18,14 @@
             "mainClass": "com.progdist.jewlery.HandmadeGlowApplication",
             "projectName": "jewlery",
             "console": "internalConsole"
+        },
+        {
+            "type": "java",
+            "name": "EmperiaApiApplication",
+            "request": "launch",
+            "mainClass": "com.progdist.emperia.EmperiaApiApplication",
+            "projectName": "emperia",
+            "console": "internalConsole"
         }
     ]
 }
