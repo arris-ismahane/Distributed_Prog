@@ -16,3 +16,5 @@ spec:
       - name: emperia
         image: ismahanearris/emperia_api:latest
         imagePullPolicy: Always
+        ports:
+          - containerPort: 8080

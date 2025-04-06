@@ -51,6 +51,10 @@ deploy:
 # Step 4: Access the application
 .PHONY: access
 access:
-	# Expose the service URL
-	@echo "Access the app at http://$(MINIKUBE_IP):$(SERVICE_PORT)"
-	minikube service handmadeglow-service
+	# Expose the service URL for internal access (kubectl port-forward)
+	@echo "Access the app internally via port-forwarding"
+	kubectl port-forward svc/handmadeglow-service 8080:8080
+
+	# Alternatively, check the service status
+	@echo "Check the service status with kubectl get svc"
+	kubectl get svc handmadeglow-service
