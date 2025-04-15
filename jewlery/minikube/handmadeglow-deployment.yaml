@@ -12,6 +12,7 @@ spec:
       labels:
         app: handmadeglow
     spec:
+      serviceAccountName: handmadeglow-sa
       containers:
       - name: handmadeglow
         image: ismahanearris/handmadeglow:latest
