@@ -1,2 +1,25 @@
 ### VS Code ###
 .vscode/
+
+# === Spring Boot ===
+*/target/
+**/target/
+*.jar
+*.war
+*.ear
+
+# Ignore Angular-specific files ONLY inside ./emperia_front
+/emperia_front/node_modules/
+/emperia_front/dist/
+/emperia_front/.angular/
+/emperia_front/.env
+/emperia_front/.vscode/
+/emperia_front/.idea/
+/emperia_front/coverage/
+
+# General ignores (apply everywhere)
+*.log
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
