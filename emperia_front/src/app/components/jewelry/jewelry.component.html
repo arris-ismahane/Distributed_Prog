@@ -1,0 +1,12 @@
+<div>
+  <h2>Jewelry: {{ name }}</h2>
+  <app-basic-entity></app-basic-entity>
+  <p>Type: {{ type }}</p>
+  <p>Price: {{ price }}</p>
+  <p>Description: {{ description }}</p>
+  <p>Materials: {{ materials.join(", ") }}</p>
+  <p>Images: {{ images.join(", ") }}</p>
+
+  <!-- Pass category data to CategoryComponent -->
+  <app-category [name]="category.name"></app-category>
+</div>
