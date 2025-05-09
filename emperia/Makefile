@@ -40,7 +40,7 @@ deploy:
 	kubectl apply -f $(MINIKUBE_GATEWAY)
 
 	# Wait for the deployment rollout to complete
-	kubectl rollout status deployment/emperia-deployment
+	kubectl rollout restart deployment emperia-deployment
 
 	# Check the status of the services
 	kubectl get svc
