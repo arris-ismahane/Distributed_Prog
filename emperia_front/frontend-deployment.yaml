@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: emperia-frontend-deployment
+  labels:
+    app: emperia-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: emperia-frontend
+  template:
+    metadata:
+      labels:
+        app: emperia-frontend
+    spec:
+      containers:
+        - name: emperia-frontend
+          image: ismahanearris/emperia-front:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80

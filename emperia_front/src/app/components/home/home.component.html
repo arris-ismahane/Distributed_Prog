@@ -1,0 +1,51 @@
+<div>
+  <h1>Welcome to the Jewelry Store</h1>
+</div>
+
+<div class="jewelry-grid">
+  <!-- Loading state -->
+  <div *ngIf="isLoading" class="loading-message">Loading jewelry items...</div>
+
+  <!-- Error state -->
+  <div *ngIf="error" class="error-message">
+    {{ error }}
+    <button
+      pButton
+      type="button"
+      label="Retry"
+      (click)="refresh()"
+      class="p-button-sm"
+    ></button>
+  </div>
+  <!-- Jewelry cards -->
+  <p-card
+    *ngFor="let item of jewelries"
+    header="{{ item.name }}"
+    class="jewelry-card"
+  >
+    <img
+      [src]="'/assets/' + item.images[0]"
+      alt="{{ item.name }}"
+      class="jewelry-img"
+    />
+    <div class="details">
+      <p><strong>Type:</strong> {{ item.type }}</p>
+      <p><strong>Price:</strong> ${{ item.price }}</p>
+      <p><strong>Description:</strong> {{ item.description }}</p>
+    </div>
+    <button
+      pButton
+      type="button"
+      label="View Details"
+      class="p-button-sm"
+    ></button>
+  </p-card>
+
+  <!-- Empty state -->
+  <div
+    *ngIf="!isLoading && !error && jewelries.length === 0"
+    class="empty-message"
+  >
+    No jewelry items available.
+  </div>
+</div>
