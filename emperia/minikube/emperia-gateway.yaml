@@ -14,7 +14,6 @@ spec:
         - "*"
 
 ---
-
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
@@ -25,6 +24,19 @@ spec:
   gateways:
     - emperia-gateway
   http:
+    # API routes
+    - match:
+        - uri:
+            prefix: /api/
+      rewrite:
+        uri: /
+      route:
+        - destination:
+            port:
+              number: 80
+            host: emperia-service.default.svc.cluster.local
+
+    # Legacy backend route (preserved for compatibility)
     - match:
         - uri:
             prefix: /emperia/
@@ -35,3 +47,22 @@ spec:
             port:
               number: 80
             host: emperia-service.default.svc.cluster.local
+
+    # Frontend route for specific path
+    - match:
+        - uri:
+            prefix: /frontend/
+      rewrite:
+        uri: /
+      route:
+        - destination:
+            port:
+              number: 80
+            host: emperia-frontend-service.default.svc.cluster.local
+
+    # Root and all other paths go to frontend
+    - route:
+        - destination:
+            port:
+              number: 80
+            host: emperia-frontend-service.default.svc.cluster.local
