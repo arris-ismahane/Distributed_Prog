@@ -1,51 +1,71 @@
-<div>
-  <h1>Welcome to the Jewelry Store</h1>
-</div>
+<div class="surface-ground p-3">
+  <h1 class="text-center text-3xl my-4">Welcome to the Jewelry Store</h1>
 
-<div class="jewelry-grid">
-  <!-- Loading state -->
-  <div *ngIf="isLoading" class="loading-message">Loading jewelry items...</div>
-
-  <!-- Error state -->
-  <div *ngIf="error" class="error-message">
-    {{ error }}
+  <!-- Toolbar -->
+  <div class="flex justify-content-end mb-3">
     <button
       pButton
-      type="button"
-      label="Retry"
-      (click)="refresh()"
-      class="p-button-sm"
+      label="Add Jewelry"
+      icon="pi pi-plus"
+      class="p-button-success"
+      routerLink="/create"
     ></button>
   </div>
-  <!-- Jewelry cards -->
-  <p-card
-    *ngFor="let item of jewelries"
-    header="{{ item.name }}"
-    class="jewelry-card"
-  >
-    <img
-      [src]="'/assets/' + item.images[0]"
-      alt="{{ item.name }}"
-      class="jewelry-img"
-    />
-    <div class="details">
-      <p><strong>Type:</strong> {{ item.type }}</p>
-      <p><strong>Price:</strong> ${{ item.price }}</p>
-      <p><strong>Description:</strong> {{ item.description }}</p>
-    </div>
+
+  <!-- Loading Spinner -->
+  <div *ngIf="isLoading" class="flex justify-content-center p-5">
+    <p-progressSpinner></p-progressSpinner>
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="error" class="surface-100 border-round p-4 mb-4 text-center">
+    <p class="text-red-500 font-medium mb-2">{{ error }}</p>
     <button
       pButton
-      type="button"
-      label="View Details"
-      class="p-button-sm"
+      label="Retry"
+      icon="pi pi-refresh"
+      class="p-button-sm p-button-danger"
+      (click)="refresh()"
     ></button>
-  </p-card>
+  </div>
 
-  <!-- Empty state -->
+  <!-- Jewelry Grid -->
+  <div class="jewelry-grid">
+    <p-card
+      *ngFor="let item of jewelries"
+      class="jewelry-card surface-card shadow-1 border-round"
+    >
+      <div class="jewelry-img-container border-round overflow-hidden mb-2">
+        <p-image
+          [src]="item.images[0] || 'assets/placeholder.jpg'"
+          alt="{{ item.name }}"
+          width="100%"
+          [preview]="true"
+          imageClass="w-full h-full object-cover"
+        ></p-image>
+      </div>
+      <div class="details p-2">
+        <p class="font-bold text-lg mb-1">{{ item.name }}</p>
+        <p class="mb-1"><strong>Type:</strong> {{ item.type }}</p>
+        <p class="mb-1"><strong>Price:</strong> {{ item.price | currency }}</p>
+        <p class="line-clamp-2 text-sm text-color-secondary">
+          {{ item.description }}
+        </p>
+      </div>
+      <button
+        pButton
+        label="View Details"
+        class="p-button-sm w-full mt-3"
+      ></button>
+    </p-card>
+  </div>
+
+  <!-- Empty State -->
   <div
     *ngIf="!isLoading && !error && jewelries.length === 0"
-    class="empty-message"
+    class="text-center p-5 text-color-secondary"
   >
-    No jewelry items available.
+    <i class="pi pi-search text-4xl"></i>
+    <p class="text-xl mt-2">No jewelry items found</p>
   </div>
 </div>
