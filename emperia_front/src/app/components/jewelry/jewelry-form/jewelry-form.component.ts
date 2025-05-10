@@ -18,6 +18,9 @@ import { MessageService } from 'primeng/api';
 import { FormsModule } from '@angular/forms';
 import { JewelryService } from '../../../services/jewelry.service';
 import { RouterModule } from '@angular/router'; // <-- ADD THIS
+import { CategoryService } from '../../../services/category.service'; // Adjust path if needed
+import { Category } from '../../../models/category';
+import { DropdownModule } from 'primeng/dropdown'; // ✅ Import this
 
 @Component({
   selector: 'app-jewelry-form',
@@ -33,6 +36,7 @@ import { RouterModule } from '@angular/router'; // <-- ADD THIS
     CardModule,
     MessageModule,
     ToastModule,
+    DropdownModule,
   ],
   providers: [MessageService],
   templateUrl: './jewelry-form.component.html',
@@ -40,26 +44,43 @@ import { RouterModule } from '@angular/router'; // <-- ADD THIS
 })
 export class JewelryFormComponent {
   jewelryForm: FormGroup;
+  categories: Category[] = [];
 
   constructor(
     private fb: FormBuilder,
     private jewelryService: JewelryService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private categoryService: CategoryService // ✅ Inject here
   ) {
     this.jewelryForm = this.fb.group({
       name: ['', Validators.required],
       type: ['', Validators.required],
-      category: this.fb.group({
-        id: [1],
-        name: ['', Validators.required],
-      }),
+      categoryId: [null, Validators.required], // ✅ Use categoryId instead of nested group
       price: [0, [Validators.required, Validators.min(0)]],
       description: [''],
       materials: this.fb.array([this.fb.control('')]),
       images: this.fb.array([this.fb.control('')]),
     });
   }
-
+  ngOnInit(): void {
+    this.categoryService.getCategories().subscribe({
+      next: (data) => (this.categories = data),
+      error: () => {
+        this.messageService.add({
+          severity: 'warn',
+          summary: 'Fallback',
+          detail: 'Using fake categories. Backend not reachable.',
+        });
+        this.categories = [
+          { id: 1, name: 'Necklaces' },
+          { id: 2, name: 'Rings' },
+          { id: 3, name: 'Bracelets' },
+          { id: 4, name: 'Earrings' },
+          { id: 5, name: 'Anklets' },
+        ];
+      },
+    });
+  }
   // In your component class, update the getters to return FormArray with proper typing
   get materials(): FormArray {
     return this.jewelryForm.get('materials') as FormArray<
@@ -99,10 +120,15 @@ export class JewelryFormComponent {
       return;
     }
 
+    const selectedCategory = this.categories.find(
+      (cat) => cat.id === this.jewelryForm.value.categoryId
+    );
+
     const newJewelry = {
       ...this.jewelryForm.value,
       id: 0,
       creationDate: Date.now(),
+      category: selectedCategory!, // Assumes always found
     };
 
     this.jewelryService.createJewlery(newJewelry).subscribe({

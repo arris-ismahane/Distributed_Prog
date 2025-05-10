@@ -8,7 +8,7 @@ import { JewelryService } from '../../services/jewelry.service';
   standalone: true,
   templateUrl: './jewelry.component.html',
   styleUrls: ['./jewelry.component.css'],
-  imports: [CategoryComponent, BasicEntityComponent], 
+  imports: [CategoryComponent, BasicEntityComponent],
 })
 export class JewelryComponent extends BasicEntityComponent {
   private jewelryService = inject(JewelryService);
