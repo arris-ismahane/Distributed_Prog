@@ -21,6 +21,8 @@ import { RouterModule } from '@angular/router'; // <-- ADD THIS
 import { CategoryService } from '../../../services/category.service'; // Adjust path if needed
 import { Category } from '../../../models/category';
 import { DropdownModule } from 'primeng/dropdown'; // ✅ Import this
+import { FileUploadModule } from 'primeng/fileupload';
+import { JewelryInput } from '../../../models/jewelry-input';
 
 @Component({
   selector: 'app-jewelry-form',
@@ -37,6 +39,7 @@ import { DropdownModule } from 'primeng/dropdown'; // ✅ Import this
     MessageModule,
     ToastModule,
     DropdownModule,
+    FileUploadModule,
   ],
   providers: [MessageService],
   templateUrl: './jewelry-form.component.html',
@@ -83,15 +86,7 @@ export class JewelryFormComponent {
   }
   // In your component class, update the getters to return FormArray with proper typing
   get materials(): FormArray {
-    return this.jewelryForm.get('materials') as FormArray<
-      FormControl<string | null>
-    >;
-  }
-
-  get images(): FormArray {
-    return this.jewelryForm.get('images') as FormArray<
-      FormControl<string | null>
-    >;
+    return this.jewelryForm.get('materials') as FormArray<FormControl>;
   }
 
   addMaterial() {
@@ -102,54 +97,59 @@ export class JewelryFormComponent {
     this.materials.removeAt(index);
   }
 
-  addImage() {
-    this.images.push(this.fb.control(''));
-  }
+  selectedFiles: File[] = [];
 
-  removeImage(index: number) {
-    this.images.removeAt(index);
+  onFileSelected(event: any) {
+    console.log('Selected files event:', event);
+    this.selectedFiles = [...event.files]; // Ensure it's assigned as an array
+    console.log('Selected files array:', this.selectedFiles);
   }
 
   onSubmit() {
-    if (this.jewelryForm.invalid) {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Invalid Form',
-        detail: 'Please fill in all required fields.',
+    if (this.jewelryForm.valid) {
+      const jewelry = this.jewelryForm.value;
+
+      this.jewelryService.createJewlery(jewelry).subscribe({
+        next: (createdJewelry) => {
+          // If we have files selected, upload them using the new jewelry ID
+          if (this.selectedFiles.length > 0) {
+            this.uploadImages(createdJewelry.id);
+          } else {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Success',
+              detail: 'Jewelry created successfully',
+            });
+          }
+        },
+        error: (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Failed to create jewelry',
+          });
+          console.error('Create jewelry error:', error);
+        },
       });
-      return;
     }
+  }
 
-    const selectedCategory = this.categories.find(
-      (cat) => cat.id === this.jewelryForm.value.categoryId
-    );
-
-    const newJewelry = {
-      ...this.jewelryForm.value,
-      id: 0,
-      creationDate: Date.now(),
-      category: selectedCategory!, // Assumes always found
-    };
-
-    this.jewelryService.createJewlery(newJewelry).subscribe({
-      next: () => {
+  uploadImages(jewelryId: number) {
+    this.jewelryService.uploadImages(jewelryId, this.selectedFiles).subscribe({
+      next: (response) => {
         this.messageService.add({
           severity: 'success',
           summary: 'Success',
-          detail: 'Jewelry added successfully.',
+          detail: 'Jewelry and images uploaded successfully',
         });
-        this.jewelryForm.reset();
-        this.materials.clear();
-        this.images.clear();
-        this.materials.push(this.fb.control(''));
-        this.images.push(this.fb.control(''));
       },
-      error: () => {
+      error: (error) => {
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
-          detail: 'Failed to add jewelry.',
+          detail: 'Jewelry created but failed to upload images',
         });
+        console.error('Image upload error:', error);
       },
     });
   }

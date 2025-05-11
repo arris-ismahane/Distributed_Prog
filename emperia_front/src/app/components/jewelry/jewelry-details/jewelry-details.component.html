@@ -19,7 +19,7 @@
     <!-- Left: Image -->
     <div class="w-full md:w-6">
       <p-image
-        [src]="jewelry.images[0]"
+        [src]="getImageSrc(jewelry.images[0])"
         alt="{{ jewelry.name }}"
         preview
         styleClass="w-full border-round"

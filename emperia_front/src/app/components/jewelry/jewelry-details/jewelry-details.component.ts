@@ -85,4 +85,16 @@ export class JewelryDetailsComponent implements OnInit {
   goBack(): void {
     this.location.back();
   }
+  getImageSrc(imageData: string): string {
+    if (!imageData) {
+      return 'assets/placeholder.jpg';
+    }
+
+    // Use existing data URI or prepend header
+    if (imageData.startsWith('data:')) {
+      return imageData;
+    }
+
+    return 'data:image/jpeg;base64,' + imageData;
+  }
 }

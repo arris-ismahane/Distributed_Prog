@@ -94,4 +94,17 @@ export class HomeComponent implements OnInit {
   refresh(): void {
     this.loadJewelries();
   }
+  getImageSrc(imageData: string): string {
+    if (!imageData) {
+      return 'assets/placeholder.jpg';
+    }
+
+    // If it already starts with 'data:', assume it's formatted correctly
+    if (imageData.startsWith('data:')) {
+      return imageData;
+    }
+
+    // Otherwise, treat it as base64 and prepend the correct header
+    return 'data:image/jpeg;base64,' + imageData;
+  }
 }
