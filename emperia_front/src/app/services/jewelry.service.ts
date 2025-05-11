@@ -5,10 +5,10 @@ import { environment } from '../../environments/environment';
 import { Jewelry } from '../models/jewelry';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class JewelryService {
-  private baseUrl = environment.apiUrl; // Use environment variable
+  private baseUrl = environment.apiUrl + '/jewleries'; // Use environment variable
 
   constructor(private http: HttpClient) {}
 

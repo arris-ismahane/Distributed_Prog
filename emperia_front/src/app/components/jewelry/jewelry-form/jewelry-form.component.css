@@ -1,0 +1,42 @@
+.p-field {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+.p-field label {
+  display: block;
+  margin-bottom: 0.5rem; /* Space between label and input */
+  font-weight: 500; /* Optional: makes labels look clearer */
+}
+
+input {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+.form-container {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+}
+
+p-card {
+  width: 100%;
+  max-width: 800px; /* You can adjust this as needed */
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+::ng-deep .p-card .p-card-header {
+  display: flex;
+  justify-content: center !important;
+  align-items: center;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.5rem;
+  margin-top: 1rem; /* Add space above the title */
+}
+
+::ng-deep .p-card .p-card-body {
+  padding: 2rem;
+}

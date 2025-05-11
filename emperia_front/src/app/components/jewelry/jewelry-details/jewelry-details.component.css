@@ -1,0 +1,31 @@
+.jewelry-details {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.details p {
+  margin: 0.5rem 0;
+}
+
+.details img {
+  border-radius: 8px;
+}
+
+.details .flex {
+  display: flex;
+  justify-content: space-between;
+}
+
+.details .w-full {
+  width: 100%;
+}
+
+.details .md\:w-6 {
+  width: 50%;
+}

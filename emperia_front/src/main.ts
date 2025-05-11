@@ -1,18 +1,21 @@
 // main.ts
 import { bootstrapApplication } from '@angular/platform-browser';
 import { provideHttpClient } from '@angular/common/http';
-import { provideRouter } from '@angular/router';
-
 import { AppComponent } from './app/app.component';
 import { routes } from './app/app.routes';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { providePrimeNG } from 'primeng/config';
+import { provideRouter } from '@angular/router';
+import Aura from '@primeng/themes/aura';
 
 bootstrapApplication(AppComponent, {
   providers: [
     provideHttpClient(),
-    provideRouter(routes)
-  ]
-}).catch(err => console.error(err));
-
+    provideRouter(routes),
+    provideAnimationsAsync(),
+    providePrimeNG({ theme: { preset: Aura } }),
+  ],
+}).catch((err) => console.error(err));
 
 /*
 import { bootstrapApplication } from '@angular/platform-browser';

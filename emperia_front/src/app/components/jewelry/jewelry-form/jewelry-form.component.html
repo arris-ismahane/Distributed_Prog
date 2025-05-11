@@ -1,0 +1,134 @@
+<div class="p-mb-3">
+  <button
+    pButton
+    label="Back to Home"
+    icon="pi pi-arrow-left"
+    class="p-button-secondary"
+    routerLink="/"
+  ></button>
+</div>
+<div class="form-container">
+  <p-card>
+    <ng-template pTemplate="header">
+      <span>Add New Jewelry</span>
+    </ng-template>
+    <form [formGroup]="jewelryForm" (ngSubmit)="onSubmit()">
+      <div class="p-field">
+        <label for="name">Name</label>
+        <input pInputText id="name" formControlName="name" />
+      </div>
+
+      <div class="p-field">
+        <label for="type">Type</label>
+        <input pInputText id="type" formControlName="type" />
+      </div>
+
+      <div class="p-field">
+        <label for="price">Price</label>
+        <div style="width: 100%">
+          <p-inputNumber
+            formControlName="price"
+            inputId="price"
+            mode="decimal"
+            [min]="0"
+            [style]="{ width: '100%' }"
+          ></p-inputNumber>
+        </div>
+      </div>
+
+      <div class="p-field">
+        <label for="category">Category</label>
+        <div style="width: 100%">
+          <p-dropdown
+            id="category"
+            [options]="categories"
+            optionLabel="name"
+            optionValue="id"
+            formControlName="categoryId"
+            placeholder="Select a Category"
+            [style]="{ width: '100%' }"
+          ></p-dropdown>
+        </div>
+      </div>
+
+      <div class="p-field">
+        <label for="description">Description</label>
+        <input pInputText id="description" formControlName="description" />
+      </div>
+
+      <div class="p-field">
+        <label>Materials</label>
+        <div
+          *ngFor="let mat of materials.controls; let i = index"
+          class="p-mb-2"
+        >
+          <div class="p-inputgroup" style="display: flex; align-items: center">
+            <input
+              pInputText
+              [formControl]="$any(mat)"
+              placeholder="Enter material"
+              style="flex: 1"
+            />
+            <button
+              *ngIf="mat.value"
+              pButton
+              type="button"
+              icon="pi pi-times"
+              (click)="removeMaterial(i)"
+              class="p-button-danger"
+              style="margin-left: 0.5rem"
+            ></button>
+          </div>
+        </div>
+        <button
+          pButton
+          type="button"
+          label="Add Material"
+          icon="pi pi-plus"
+          (click)="addMaterial()"
+          class="p-button-text p-mt-2"
+        ></button>
+      </div>
+
+      <div class="p-field">
+        <label>Images</label>
+        <div *ngFor="let img of images.controls; let i = index" class="p-mb-2">
+          <div class="p-inputgroup" style="display: flex; align-items: center">
+            <input
+              pInputText
+              [formControl]="$any(img)"
+              placeholder="Enter image URL"
+              style="flex: 1"
+            />
+            <button
+              *ngIf="img.value"
+              pButton
+              type="button"
+              icon="pi pi-times"
+              (click)="removeImage(i)"
+              class="p-button-danger"
+              style="margin-left: 0.5rem"
+            ></button>
+          </div>
+        </div>
+        <button
+          pButton
+          type="button"
+          label="Add Image"
+          icon="pi pi-plus"
+          (click)="addImage()"
+          class="p-button-text p-mt-2"
+        ></button>
+      </div>
+      <button
+        pButton
+        type="submit"
+        label="Submit"
+        class="p-mt-3"
+        [disabled]="jewelryForm.invalid"
+      ></button>
+    </form>
+  </p-card>
+
+  <p-toast></p-toast>
+</div>
