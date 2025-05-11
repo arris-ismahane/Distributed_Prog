@@ -31,10 +31,6 @@ public class EmperiaUserController {
 
     private static final String USER_API_PATH = "/api/users";
 
-    public EmperiaUserController() {
-        this.restTemplate = new RestTemplate();
-    }
-
     @GetMapping
     public List<EmperiaUser> getAllUsers() {
         String url = databaseServiceURL + USER_API_PATH;

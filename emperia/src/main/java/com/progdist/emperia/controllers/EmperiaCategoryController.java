@@ -30,10 +30,6 @@ public class EmperiaCategoryController {
     private final RestTemplate restTemplate;
     private static final String CATEGORY_API_PATH = "/api/categories";
     
-    public EmperiaCategoryController() {
-        this.restTemplate = new RestTemplate();
-    }
-    
     @GetMapping
     public List<Category> getAllCategories() {
         String url = databaseServiceURL + CATEGORY_API_PATH;

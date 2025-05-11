@@ -91,34 +91,16 @@
       </div>
 
       <div class="p-field">
-        <label>Images</label>
-        <div *ngFor="let img of images.controls; let i = index" class="p-mb-2">
-          <div class="p-inputgroup" style="display: flex; align-items: center">
-            <input
-              pInputText
-              [formControl]="$any(img)"
-              placeholder="Enter image URL"
-              style="flex: 1"
-            />
-            <button
-              *ngIf="img.value"
-              pButton
-              type="button"
-              icon="pi pi-times"
-              (click)="removeImage(i)"
-              class="p-button-danger"
-              style="margin-left: 0.5rem"
-            ></button>
-          </div>
-        </div>
-        <button
-          pButton
-          type="button"
-          label="Add Image"
-          icon="pi pi-plus"
-          (click)="addImage()"
-          class="p-button-text p-mt-2"
-        ></button>
+        <p-fileUpload
+          name="myImages"
+          [multiple]="true"
+          accept="image/*"
+          (onSelect)="onFileSelected($event)"
+          [auto]="false"
+          [showUploadButton]="false"
+          [showCancelButton]="false"
+          chooseLabel="Upload Images"
+        ></p-fileUpload>
       </div>
       <button
         pButton

@@ -5,13 +5,17 @@ import com.progdist.jewlery.model.Jewlery;
 import com.progdist.jewlery.model.inputs.JewleryInput;
 import com.progdist.jewlery.repositories.JewleryRepository;
 
+import jakarta.persistence.EntityNotFoundException;
+
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class JewleryService {
     private final JewleryRepository repository;
@@ -44,5 +48,17 @@ public class JewleryService {
         new_jewlery.setId(old_jewlery.getId());
         new_jewlery.setCategory(category);
         return repository.save(new_jewlery);
+    }
+
+    public Jewlery updateJewleryImages(Long jewelryId, List<byte[]> images) {
+        // Find existing jewelry
+        Jewlery jewlery = repository.findById(jewelryId)
+                .orElseThrow(() -> new EntityNotFoundException("Jewelry not found with id: " + jewelryId));
+
+        // Update images
+        jewlery.setImages(images);
+
+        // Save and return
+        return repository.save(jewlery);
     }
 }

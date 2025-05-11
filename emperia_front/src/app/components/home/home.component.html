@@ -37,7 +37,7 @@
     >
       <div class="jewelry-img-container border-round overflow-hidden mb-2">
         <p-image
-          [src]="item.images[0] || 'assets/placeholder.jpg'"
+          [src]="getImageSrc(item.images[0])"
           alt="{{ item.name }}"
           width="100%"
           [preview]="true"

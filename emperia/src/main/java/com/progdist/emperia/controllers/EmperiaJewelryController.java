@@ -13,14 +13,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
 @RestController
-@RequestMapping("/jewleries")
+@RequestMapping("/jewelries")
 @RequiredArgsConstructor
 public class EmperiaJewelryController {
 
@@ -30,18 +33,15 @@ public class EmperiaJewelryController {
     private final RestTemplate restTemplate;
 
     private static final String JEWELRY_API_PATH = "/api/jewleries";
-    
-    public EmperiaJewelryController() {
-        this.restTemplate = new RestTemplate();
-    }
-    
+
     @GetMapping
     public List<Jewlery> getAllJewelry() {
         String url = databaseServiceURL + JEWELRY_API_PATH;
         Jewlery[] response = restTemplate.getForObject(url, Jewlery[].class);
         return Arrays.asList(response);
     }
-    
+
+
     @GetMapping("/{id}")
     public Jewlery getJewelryById(@PathVariable long id) {
         String url = databaseServiceURL + JEWELRY_API_PATH + "/" + id;
@@ -66,5 +66,42 @@ public class EmperiaJewelryController {
         // Using exchange instead of put to get the response body
         return restTemplate.exchange(url, org.springframework.http.HttpMethod.PUT, 
             new org.springframework.http.HttpEntity<>(input), Jewlery.class).getBody();
+    }
+
+    @PutMapping("images/{jewelryId}")
+    public Jewlery uploadImages(@PathVariable Long jewelryId, @RequestParam("images") List<MultipartFile> imageFiles)
+            throws IOException {
+        String url = databaseServiceURL + JEWELRY_API_PATH + "/" + jewelryId + "/images";
+
+        // Create multipart request parts
+        org.springframework.util.MultiValueMap<String, Object> body = new org.springframework.util.LinkedMultiValueMap<>();
+
+        // Add each image to the request with the same param name "images"
+        for (MultipartFile file : imageFiles) {
+            // Create a resource from the file's bytes
+            org.springframework.core.io.ByteArrayResource resource = new org.springframework.core.io.ByteArrayResource(
+                    file.getBytes()) {
+                @Override
+                public String getFilename() {
+                    return file.getOriginalFilename();
+                }
+            };
+            body.add("images", resource);
+        }
+
+        // Set headers for multipart form data
+        org.springframework.http.HttpHeaders headers = new org.springframework.http.HttpHeaders();
+        headers.setContentType(org.springframework.http.MediaType.MULTIPART_FORM_DATA);
+
+        // Create the request entity
+        org.springframework.http.HttpEntity<org.springframework.util.MultiValueMap<String, Object>> requestEntity = new org.springframework.http.HttpEntity<>(
+                body, headers);
+
+        // Make the PUT request and return the response
+        return restTemplate.exchange(
+                url,
+                org.springframework.http.HttpMethod.PUT,
+                requestEntity,
+                Jewlery.class).getBody();
     }
 }
