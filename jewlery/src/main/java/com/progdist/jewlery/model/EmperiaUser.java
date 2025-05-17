@@ -1,5 +1,6 @@
 package com.progdist.jewlery.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -18,9 +19,10 @@ import lombok.experimental.SuperBuilder;
 public class EmperiaUser extends BasicEntity {
     private String firstName;
     private String lastName;
+    @Column(unique = true)
     private String username;
     private String password;
     private long birthDate;
     @Enumerated(EnumType.STRING)
-    private EmperiaUserType EmperiaUserType;
+    private EmperiaUserType emperiaUserType;
 }

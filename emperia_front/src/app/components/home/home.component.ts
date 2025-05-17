@@ -9,6 +9,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner'; // <-- For the 
 import { JewelryService } from '../../services/jewelry.service';
 import { Jewelry } from '../../models/jewelry';
 import { RouterModule } from '@angular/router'; // <-- ADD THIS
+import { ProfileBubbleComponent } from '../../components/profile-bubble/profile-bubble.component';
 
 @Component({
   selector: 'app-home',
@@ -22,6 +23,7 @@ import { RouterModule } from '@angular/router'; // <-- ADD THIS
     ButtonModule,
     ImageModule, // <-- Add this
     ProgressSpinnerModule, // <-- Add this if using p-progressSpinner
+    ProfileBubbleComponent,
   ],
 })
 export class HomeComponent implements OnInit {
@@ -29,9 +31,47 @@ export class HomeComponent implements OnInit {
   jewelries: Jewelry[] = [];
   isLoading: boolean = true;
   error: string | null = null;
-
+  user = {
+    firstName: 'John',
+    lastName: 'Doe',
+    username: 'johndoe',
+    birthdate: '1990-05-12',
+  };
   // Fallback jewelry data
   private fallbackJewelries: Jewelry[] = [
+    {
+      id: 1,
+      name: 'Classic Gold Ring',
+      type: 'Ring',
+      category: { id: 1, name: 'Rings' },
+      price: 299.99,
+      creationDate: Date.now(),
+      description: 'A beautiful classic gold ring with simple design',
+      materials: ['Gold'],
+      images: ['https://example.com/ring1.jpg'],
+    },
+    {
+      id: 2,
+      name: 'Silver Pendant Necklace',
+      type: 'Necklace',
+      category: { id: 2, name: 'Necklaces' },
+      price: 149.99,
+      creationDate: Date.now(),
+      description: 'Elegant silver pendant necklace with gemstone',
+      materials: ['Silver', 'Gemstone'],
+      images: ['https://example.com/necklace1.jpg'],
+    },
+    {
+      id: 3,
+      name: 'Diamond Stud Earrings',
+      type: 'Earrings',
+      category: { id: 3, name: 'Earrings' },
+      price: 499.99,
+      creationDate: Date.now(),
+      description: 'Luxurious diamond stud earrings in white gold',
+      materials: ['White Gold', 'Diamond'],
+      images: ['https://example.com/earrings1.jpg'],
+    },
     {
       id: 1,
       name: 'Classic Gold Ring',

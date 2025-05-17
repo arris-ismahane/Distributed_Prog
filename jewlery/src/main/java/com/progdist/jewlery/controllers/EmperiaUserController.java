@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequestMapping("/api/users")
@@ -33,8 +35,14 @@ public class EmperiaUserController {
         return service.getEmperiaUserById(id);
     }
 
+    @GetMapping("/username/{username}")
+    public EmperiaUser getEmperiaUserByUsername(@PathVariable String username) {
+        return service.getEmperiaUserByUsername(username);
+    }
+    
+
     @DeleteMapping("{id}")
-    public void deleteEmperiaUser(long id) {
+    public void deleteEmperiaUser(@PathVariable long id) {
         service.deleteEmperiaUser(id);
     }
 

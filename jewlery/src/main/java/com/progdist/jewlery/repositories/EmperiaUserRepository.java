@@ -7,5 +7,5 @@ import com.progdist.jewlery.model.EmperiaUser;
 
 @Repository
 public interface EmperiaUserRepository extends JpaRepository<EmperiaUser, Long>{
-    
+    public EmperiaUser findByUsername(String username);       
 }

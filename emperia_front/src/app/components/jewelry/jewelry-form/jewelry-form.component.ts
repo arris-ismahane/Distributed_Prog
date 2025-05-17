@@ -17,12 +17,12 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { FormsModule } from '@angular/forms';
 import { JewelryService } from '../../../services/jewelry.service';
-import { RouterModule } from '@angular/router'; // <-- ADD THIS
-import { CategoryService } from '../../../services/category.service'; // Adjust path if needed
+import { RouterModule, Router, ActivatedRoute } from '@angular/router';
+import { CategoryService } from '../../../services/category.service';
 import { Category } from '../../../models/category';
-import { DropdownModule } from 'primeng/dropdown'; // ✅ Import this
+import { DropdownModule } from 'primeng/dropdown';
 import { FileUploadModule } from 'primeng/fileupload';
-import { JewelryInput } from '../../../models/jewelry-input';
+import { Location } from '@angular/common'; // To navigate back
 
 @Component({
   selector: 'app-jewelry-form',
@@ -48,23 +48,28 @@ import { JewelryInput } from '../../../models/jewelry-input';
 export class JewelryFormComponent {
   jewelryForm: FormGroup;
   categories: Category[] = [];
+  selectedFiles: File[] = [];
 
   constructor(
+    private route: ActivatedRoute,
+    private location: Location,
     private fb: FormBuilder,
     private jewelryService: JewelryService,
     private messageService: MessageService,
-    private categoryService: CategoryService // ✅ Inject here
+    private categoryService: CategoryService,
+    private router: Router
   ) {
     this.jewelryForm = this.fb.group({
       name: ['', Validators.required],
       type: ['', Validators.required],
-      categoryId: [null, Validators.required], // ✅ Use categoryId instead of nested group
+      categoryId: [null, Validators.required],
       price: [0, [Validators.required, Validators.min(0)]],
       description: [''],
       materials: this.fb.array([this.fb.control('')]),
       images: this.fb.array([this.fb.control('')]),
     });
   }
+
   ngOnInit(): void {
     this.categoryService.getCategories().subscribe({
       next: (data) => (this.categories = data),
@@ -84,8 +89,8 @@ export class JewelryFormComponent {
       },
     });
   }
-  // In your component class, update the getters to return FormArray with proper typing
-  get materials(): FormArray {
+
+  get materials(): FormArray<FormControl> {
     return this.jewelryForm.get('materials') as FormArray<FormControl>;
   }
 
@@ -97,11 +102,9 @@ export class JewelryFormComponent {
     this.materials.removeAt(index);
   }
 
-  selectedFiles: File[] = [];
-
   onFileSelected(event: any) {
     console.log('Selected files event:', event);
-    this.selectedFiles = [...event.files]; // Ensure it's assigned as an array
+    this.selectedFiles = [...event.files];
     console.log('Selected files array:', this.selectedFiles);
   }
 
@@ -111,7 +114,6 @@ export class JewelryFormComponent {
 
       this.jewelryService.createJewlery(jewelry).subscribe({
         next: (createdJewelry) => {
-          // If we have files selected, upload them using the new jewelry ID
           if (this.selectedFiles.length > 0) {
             this.uploadImages(createdJewelry.id);
           } else {
@@ -120,6 +122,7 @@ export class JewelryFormComponent {
               summary: 'Success',
               detail: 'Jewelry created successfully',
             });
+            setTimeout(() => this.goHome(), 1000);
           }
         },
         error: (error) => {
@@ -142,6 +145,7 @@ export class JewelryFormComponent {
           summary: 'Success',
           detail: 'Jewelry and images uploaded successfully',
         });
+        setTimeout(() => this.goHome(), 1000);
       },
       error: (error) => {
         this.messageService.add({
@@ -153,4 +157,7 @@ export class JewelryFormComponent {
       },
     });
   }
+
+  goHome() {
+this.location.back();  }
 }

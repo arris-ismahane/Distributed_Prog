@@ -42,8 +42,8 @@ deploy:
 	kubectl apply -f $(MINIKUBE_HANDMADEGLOW_DEPLOYMENT)
 
 	# Wait for the deployment rollout to complete
-	kubectl rollout status deployment/handmadeglow-deployment
-	kubectl rollout status deployment/postgres-deployment
+	kubectl rollout restart deployment handmadeglow-deployment
+	kubectl rollout restart deployment postgres-deployment
 
 	# Check the status of the services
 	kubectl get svc
