@@ -1,0 +1,13 @@
+/* Custom header styling */
+.login-header {
+  text-align: center;
+  margin-bottom: 1.5rem; /* Adds space below the header */
+  padding-top: 1rem; /* Adds space above the header */
+}
+
+.login-header span {
+  font-size: 1.5rem; /* Larger text */
+  font-weight: 600; /* Semi-bold */
+  color: #333; /* Dark gray color (adjust as needed) */
+  letter-spacing: 0.5px; /* Slight spacing between letters */
+}

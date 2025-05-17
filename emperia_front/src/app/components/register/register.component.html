@@ -1,0 +1,144 @@
+<div style="max-width: 50rem; margin: 2rem auto">
+  <p-card [style]="{ width: '100%' }">
+    <ng-template pTemplate="header">
+      <div class="text-center p-4">
+        <h2 class="m-0">Create an Account</h2>
+      </div>
+    </ng-template>
+
+    <form
+      [formGroup]="registerForm"
+      (ngSubmit)="onSubmit()"
+      class="p-fluid p-4"
+    >
+      <!-- First Name -->
+      <div class="field mb-4">
+        <label for="firstName" class="block font-medium mb-2">First Name</label>
+        <input
+          id="firstName"
+          pInputText
+          formControlName="firstName"
+          class="w-full"
+        />
+      </div>
+
+      <!-- Last Name -->
+      <div class="field mb-4">
+        <label for="lastName" class="block font-medium mb-2">Last Name</label>
+        <input
+          id="lastName"
+          pInputText
+          formControlName="lastName"
+          class="w-full"
+        />
+      </div>
+
+      <!-- Username -->
+      <div class="field mb-4">
+        <label for="username" class="block font-medium mb-2">Username</label>
+        <input
+          id="username"
+          pInputText
+          formControlName="username"
+          class="w-full"
+        />
+      </div>
+
+      <!-- Password -->
+      <div class="field mb-4">
+        <label for="password" class="block font-medium mb-2">Password</label>
+        <p-password
+          id="password"
+          formControlName="password"
+          [feedback]="true"
+          [toggleMask]="true"
+          inputStyleClass="w-full"
+          [style]="{ width: '100%' }"
+        ></p-password>
+      </div>
+
+      <!-- Confirm Password -->
+      <div class="field mb-4">
+        <label for="confirmPassword" class="block font-medium mb-2"
+          >Confirm Password</label
+        >
+        <p-password
+          id="confirmPassword"
+          formControlName="confirmPassword"
+          [toggleMask]="true"
+          inputStyleClass="w-full"
+          [style]="{ width: '100%' }"
+        ></p-password>
+      </div>
+
+      <!-- Birth Date -->
+      <div class="field mb-4">
+        <label for="birthDate" class="block font-medium mb-2">Birth Date</label>
+        <p-calendar
+          id="birthDate"
+          formControlName="birthDate"
+          [showIcon]="true"
+          dateFormat="yy-mm-dd"
+          [readonlyInput]="true"
+          [maxDate]="maxBirthDate"
+          [yearRange]="yearRange"
+          styleClass="w-full"
+        ></p-calendar>
+      </div>
+
+      <!-- User Type Selection -->
+      <div class="field mb-4">
+        <label class="block font-medium mb-2">Account Type</label>
+        <div class="flex gap-4">
+          <div
+            class="flex align-items-center ml-5 mr-5"
+            [style]="{ width: '40%' }"
+          >
+            <p-radioButton
+              name="userType"
+              [value]="userTypeEnum.CUSTOMER"
+              formControlName="userType"
+              inputId="customer"
+            ></p-radioButton>
+            <label for="customer" class="ml-2">Customer</label>
+          </div>
+          <div class="flex align-items-center">
+            <p-radioButton
+              name="userType"
+              [value]="userTypeEnum.SELLER"
+              formControlName="userType"
+              inputId="seller"
+            ></p-radioButton>
+            <label for="seller" class="ml-2">Seller</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="mb-4">
+        <button
+          pButton
+          type="submit"
+          label="Register"
+          class="w-full"
+          [disabled]="registerForm.invalid"
+        ></button>
+      </div>
+
+      <!-- Error Message -->
+      <div *ngIf="error" class="p-error mt-2 text-sm text-center">
+        {{ error }}
+      </div>
+
+      <!-- Login Link -->
+      <p class="text-center mt-4">
+        Already have an account?
+        <a
+          class="text-primary cursor-pointer font-medium"
+          [routerLink]="['/login']"
+          >Login</a
+        >
+      </p>
+    </form>
+  </p-card>
+</div>

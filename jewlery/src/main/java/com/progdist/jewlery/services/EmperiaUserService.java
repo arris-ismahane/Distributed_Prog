@@ -24,12 +24,21 @@ public class EmperiaUserService {
         return repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Not Found Exception", "EmperiaUser not found"));
     }
+    public EmperiaUser getEmperiaUserByUsername(String username) {
+        var user = repository.findByUsername(username);
+        if(user == null)
+            throw new NotFoundException("Not Found Exception", "EmperiaUser not found");
+        return user;
+    }
 
     public void deleteEmperiaUser(long id) {
         repository.deleteById(id);
     }
 
     public EmperiaUser createEmperiaUser(EmperiaUserInput input) {
+        if (repository.findByUsername(input.username()) != null) {
+        throw new IllegalArgumentException("Username already exists");
+    }
         return repository.save(input.toEntity());
     }    
     

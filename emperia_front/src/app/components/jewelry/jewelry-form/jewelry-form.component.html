@@ -7,55 +7,59 @@
     routerLink="/"
   ></button>
 </div>
+
 <div class="form-container">
   <p-card>
     <ng-template pTemplate="header">
       <span>Add New Jewelry</span>
     </ng-template>
+
     <form [formGroup]="jewelryForm" (ngSubmit)="onSubmit()">
+      <!-- Name -->
       <div class="p-field">
         <label for="name">Name</label>
         <input pInputText id="name" formControlName="name" />
       </div>
 
+      <!-- Type -->
       <div class="p-field">
         <label for="type">Type</label>
         <input pInputText id="type" formControlName="type" />
       </div>
 
+      <!-- Price -->
       <div class="p-field">
         <label for="price">Price</label>
-        <div style="width: 100%">
-          <p-inputNumber
-            formControlName="price"
-            inputId="price"
-            mode="decimal"
-            [min]="0"
-            [style]="{ width: '100%' }"
-          ></p-inputNumber>
-        </div>
+        <p-inputNumber
+          formControlName="price"
+          inputId="price"
+          mode="decimal"
+          [min]="0"
+          [style]="{ width: '100%' }"
+        ></p-inputNumber>
       </div>
 
+      <!-- Category -->
       <div class="p-field">
         <label for="category">Category</label>
-        <div style="width: 100%">
-          <p-dropdown
-            id="category"
-            [options]="categories"
-            optionLabel="name"
-            optionValue="id"
-            formControlName="categoryId"
-            placeholder="Select a Category"
-            [style]="{ width: '100%' }"
-          ></p-dropdown>
-        </div>
+        <p-dropdown
+          id="category"
+          [options]="categories"
+          optionLabel="name"
+          optionValue="id"
+          formControlName="categoryId"
+          placeholder="Select a Category"
+          [style]="{ width: '100%' }"
+        ></p-dropdown>
       </div>
 
+      <!-- Description -->
       <div class="p-field">
         <label for="description">Description</label>
         <input pInputText id="description" formControlName="description" />
       </div>
 
+      <!-- Materials -->
       <div class="p-field">
         <label>Materials</label>
         <div
@@ -80,35 +84,53 @@
             ></button>
           </div>
         </div>
+        <div style="text-align: right">
+          <button
+            pButton
+            type="button"
+            label="Add Material"
+            icon="pi pi-plus"
+            (click)="addMaterial()"
+            class="p-button-text p-mt-2"
+          ></button>
+        </div>
+      </div>
+
+      <!-- File Upload (Drag & Drop) -->
+      <p-fileUpload
+        name="images[]"
+        [customUpload]="true"
+        mode="advanced"
+        [auto]="false"
+        [multiple]="true"
+        accept="image/*"
+        (onSelect)="onFileSelected($event)"
+        chooseLabel="Choose"
+        uploadLabel="Upload"
+        cancelLabel="Clear"
+        [showCancelButton]="true"
+        [showUploadButton]="false"
+      />
+
+      <!-- Action Buttons -->
+      <div
+        class="p-mt-3"
+        style="display: flex; justify-content: flex-end; gap: 1rem"
+      >
         <button
           pButton
           type="button"
-          label="Add Material"
-          icon="pi pi-plus"
-          (click)="addMaterial()"
-          class="p-button-text p-mt-2"
+          label="Cancel"
+          class="p-button-secondary"
+          (click)="goHome()"
+        ></button>
+        <button
+          pButton
+          type="submit"
+          label="Submit"
+          [disabled]="jewelryForm.invalid"
         ></button>
       </div>
-
-      <div class="p-field">
-        <p-fileUpload
-          name="myImages"
-          [multiple]="true"
-          accept="image/*"
-          (onSelect)="onFileSelected($event)"
-          [auto]="false"
-          [showUploadButton]="false"
-          [showCancelButton]="false"
-          chooseLabel="Upload Images"
-        ></p-fileUpload>
-      </div>
-      <button
-        pButton
-        type="submit"
-        label="Submit"
-        class="p-mt-3"
-        [disabled]="jewelryForm.invalid"
-      ></button>
     </form>
   </p-card>
 

@@ -1,0 +1,57 @@
+<div style="max-width: 50rem; margin: 2rem auto">
+  <p-card [style]="{ width: '100%' }">
+    <!-- Centered Header with Margin & Custom Styling -->
+    <ng-template pTemplate="header">
+      <div class="text-center p-mb-4 p-pt-3 p-mt-3">
+        <!-- Added p-mt-3 -->
+        <span class="text-xl font-semibold text-900">Login to Emperia</span>
+      </div>
+    </ng-template>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="p-fluid">
+      <!-- Rest of your form remains unchanged -->
+      <div class="field">
+        <label for="username" class="block mb-2">Username</label>
+        <input
+          id="username"
+          type="text"
+          pInputText
+          formControlName="username"
+          style="width: 100%"
+        />
+      </div>
+
+      <div class="field mt-4">
+        <label for="password" class="block mb-2">Password</label>
+        <p-password
+          id="password"
+          formControlName="password"
+          [feedback]="false"
+          toggleMask="true"
+          inputStyleClass="w-full"
+          [style]="{ width: '100%' }"
+        ></p-password>
+      </div>
+
+      <div class="mt-4">
+        <button
+          pButton
+          type="submit"
+          label="Login"
+          style="width: 100%"
+        ></button>
+      </div>
+
+      <div *ngIf="error" class="p-error mt-2 text-sm text-center">
+        {{ error }}
+      </div>
+
+      <p class="mt-4 text-center">
+        Don't have an account?
+        <a class="text-primary cursor-pointer" (click)="goToRegister()"
+          >Create one</a
+        >
+      </p>
+    </form>
+  </p-card>
+</div>

@@ -16,4 +16,7 @@ RUN npm run build
 # Stage 2: Serve the app with Nginx
 FROM nginx:stable
 COPY --from=build /app/dist/emperia_front/browser /usr/share/nginx/html
+# override default config
+COPY nginx.conf /etc/nginx/conf.d/default.conf  
+
 EXPOSE 80
