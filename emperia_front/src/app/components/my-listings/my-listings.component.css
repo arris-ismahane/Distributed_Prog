@@ -1,0 +1,63 @@
+.jewelry-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); /* wider cards */
+  gap: 2rem; /* space between cards */
+  padding: 1.5rem;
+}
+::ng-deep .jewelry-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  border-radius: 1rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+  padding: 1rem;
+}
+
+::ng-deep .jewelry-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+}
+
+.category-name {
+  color: var(--text-color-secondary, #6c757d);
+  font-weight: 600;
+}
+
+.jewelry-img-container {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+}
+
+.jewelry-img-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.jewelry-card:hover .jewelry-img-container img {
+  transform: scale(1.05);
+}
+
+/* Status indicators */
+.status-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+/* Empty state styling */
+.empty-state {
+  padding: 3rem;
+  text-align: center;
+  background-color: var(--surface-50);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}

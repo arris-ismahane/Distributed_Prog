@@ -5,11 +5,11 @@ import com.progdist.jewlery.model.JewleryDTO;
 import com.progdist.jewlery.model.inputs.JewleryInput;
 import com.progdist.jewlery.services.JewleryService;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,23 +32,8 @@ public class JewleryController {
 
     @GetMapping
     public List<JewleryDTO> getJewleries() {
-        return service.getJewleries().stream()
-                .map((Jewlery j) -> JewleryDTO.builder()
-                        .id(j.getId())
-                        .name(j.getName())
-                        .type(j.getType())
-                        .category(j.getCategory())
-                        .price(j.getPrice())
-                        .creationDate(j.getCreationDate())
-                        .description(j.getDescription())
-                        .materials(j.getMaterials())
-                        .images(j.getImages().stream()
-                                .map((byte[] img) -> Base64.getEncoder().encodeToString(img))
-                                .collect(Collectors.toList()))
-                        .build())
-                .collect(Collectors.toList());
+        return service.getJewleries();
     }
-
 
     @GetMapping("{id}")
     public Jewlery getJewleryById(@PathVariable long id) {
@@ -56,15 +41,15 @@ public class JewleryController {
     }
 
     @DeleteMapping("{id}")
-    public void deleteJewlery(long id) {
+    public void deleteJewlery(@PathVariable long id) {
         service.deleteJewlery(id);
     }
 
     @PostMapping("create")
-    public Jewlery createJewlery(@RequestBody JewleryInput input) {
-        return service.createJewlery(input);
-    }    
-    
+    public Jewlery createJewlery(@RequestBody JewleryInput input, HttpServletRequest request) {
+        return service.createJewlery(input, request);
+    }
+
     @PutMapping("update/{id}")
     public Jewlery updateJewlery(@PathVariable long id, @RequestBody JewleryInput input) {
         return service.updateJewlery(id, input);
@@ -84,4 +69,15 @@ public class JewleryController {
         // Call service method to update images
         return service.updateJewleryImages(jewelryId, imageByteArrays);
     }
+
+    @GetMapping("/user/{userId}")
+    public List<JewleryDTO> getJewleriesByUserOwnership(
+            @PathVariable long userId,
+            @RequestParam boolean owned,
+            @RequestParam(required = false) Long categoryId,
+            @RequestParam(defaultValue = "creationDate") String sortBy,
+            @RequestParam(defaultValue = "asc") String order) {
+        return service.getJewleriesByUserOwnership(userId, owned, categoryId, sortBy, order);
+    }
+
 }

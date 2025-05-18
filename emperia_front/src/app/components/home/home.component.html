@@ -2,68 +2,135 @@
   <div class="flex justify-content-end mb-3">
     <app-profile-bubble></app-profile-bubble>
   </div>
-  <h1 class="text-center text-3xl my-4">Welcome to the Jewelry Store</h1>
-  <!-- Toolbar -->
-  <div class="flex justify-content-end mb-3">
-    <button
-      pButton
-      label="Add Jewelry"
-      icon="pi pi-plus"
-      class="p-button-success"
-      routerLink="/create"
-    ></button>
-  </div>
+  <div class="header-section">
+    <div class="header-content">
+      <h1 class="text-center text-3xl my-4">Welcome to the Jewelry Store</h1>
 
-  <!-- Loading Spinner -->
-  <div *ngIf="isLoading" class="flex justify-content-center p-5">
-    <p-progressSpinner></p-progressSpinner>
-  </div>
+      <div
+        class="flex flex-column md:flex-row justify-content-between align-items-center gap-3 mb-4"
+      >
+        <p-toast></p-toast>
+        <p-dropdown
+          [options]="categories"
+          [(ngModel)]="selectedCategoryId"
+          optionLabel="name"
+          optionValue="id"
+          placeholder="Select Category"
+          [showClear]="true"
+          class="w-full md:w-20rem"
+          (onChange)="onFiltersChanged()"
+        ></p-dropdown>
 
-  <!-- Error Message -->
-  <div *ngIf="error" class="surface-100 border-round p-4 mb-4 text-center">
-    <p class="text-red-500 font-medium mb-2">{{ error }}</p>
-    <button
-      pButton
-      label="Retry"
-      icon="pi pi-refresh"
-      class="p-button-sm p-button-danger"
-      (click)="refresh()"
-    ></button>
-  </div>
+        <p-dropdown
+          [options]="sortOptions"
+          [(ngModel)]="selectedSort"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Sort By"
+          class="w-full md:w-20rem"
+          (onChange)="onFiltersChanged()"
+        ></p-dropdown>
+        <div class="flex gap-2">
+          <button
+            pButton
+            label="Add Jewelry"
+            icon="pi pi-plus-circle"
+            class="p-button-success"
+            routerLink="/create"
+          ></button>
 
-  <!-- Jewelry Grid -->
-  <div class="jewelry-grid">
-    <p-card
-      *ngFor="let item of jewelries"
-      class="jewelry-card surface-card shadow-1 border-round"
-    >
-      <div class="jewelry-img-container border-round overflow-hidden mb-2">
-        <p-image
-          [src]="getImageSrc(item.images[0])"
-          alt="{{ item.name }}"
-          width="100%"
-          [preview]="true"
-          imageClass="w-full h-full object-cover"
-        ></p-image>
+          <button
+            pButton
+            label="My Listings"
+            icon="pi pi-list"
+            class="p-button-info p-button-outlined"
+            routerLink="/my-listings"
+          ></button>
+        </div>
       </div>
-      <div class="details p-2">
-        <p class="font-bold text-lg mb-1">{{ item.name }}</p>
-        <p class="mb-1"><strong>Type:</strong> {{ item.type }}</p>
-        <p class="mb-1"><strong>Price:</strong> {{ item.price | currency }}</p>
-        <p class="line-clamp-2 text-sm text-color-secondary">
-          {{ item.description }}
-        </p>
+
+      <div *ngIf="isLoading" class="flex justify-content-center p-5">
+        <p-progressSpinner></p-progressSpinner>
       </div>
-      <button
-        pButton
-        label="View Details"
-        class="p-button-sm w-full mt-3"
-        [routerLink]="['/jewelry', item.id]"
-      ></button>
-    </p-card>
+
+      <div *ngIf="error" class="surface-100 border-round p-4 mb-4 text-center">
+        <p class="text-red-500 font-medium mb-2">{{ error }}</p>
+        <button
+          pButton
+          label="Retry"
+          icon="pi pi-refresh"
+          class="p-button-sm p-button-danger"
+          (click)="refresh()"
+        ></button>
+      </div>
+    </div>
+  </div>
+  <div class="grid">
+    <div class="jewelry-grid" *ngIf="jewelries.length > 0">
+      <div class="jewelry-card-wrapper" *ngFor="let item of jewelries">
+        <p-card class="jewelry-card shadow-2 border-round p-3 h-full">
+          <ng-template pTemplate="content">
+            <div class="flex flex-column h-full relative">
+              <!-- Category Name -->
+              <div
+                class="category-name mb-2 text-sm text-color-secondary font-semibold"
+              >
+                {{ item.category.name }}
+              </div>
+
+              <!-- Image -->
+              <div
+                class="jewelry-img-container mb-3 border-round overflow-hidden"
+              >
+                <p-image
+                  [src]="getImageSrc(item.images[0])"
+                  alt="{{ item.name }}"
+                  [preview]="true"
+                  imageClass="w-full h-full object-cover"
+                ></p-image>
+              </div>
+
+              <!-- Name and Price Row -->
+              <div
+                class="flex justify-content-between align-items-center mb-2 px-1"
+              >
+                <div class="text-lg font-semibold text-900">
+                  {{ item.name }}
+                </div>
+                <div class="text-base font-bold text-green-600">
+                  {{ item.price | currency }}
+                </div>
+              </div>
+
+              <!-- Ratings -->
+              <p-rating
+                [ngModel]="getRandomRating(item.id)"
+                [readonly]="true"
+                class="mb-2"
+              ></p-rating>
+
+              <!-- Action Buttons -->
+              <div class="grid grid-cols-2 gap-2 pt-3">
+                <button
+                  pButton
+                  label="Details"
+                  class="p-button-sm w-full"
+                  [routerLink]="['/jewelry', item.id]"
+                ></button>
+                <button
+                  pButton
+                  label="Add to Cart"
+                  class="p-button-sm p-button-outlined w-full"
+                  (click)="addToCart(item)"
+                ></button>
+              </div>
+            </div>
+          </ng-template>
+        </p-card>
+      </div>
+    </div>
   </div>
 
-  <!-- Empty State -->
   <div
     *ngIf="!isLoading && !error && jewelries.length === 0"
     class="text-center p-5 text-color-secondary"

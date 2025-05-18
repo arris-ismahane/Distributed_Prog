@@ -1,20 +1,30 @@
 <div class="p-mb-3">
   <button
     pButton
-    label="Back to Home"
+    label="Back"
     icon="pi pi-arrow-left"
     class="p-button-secondary"
-    routerLink="/home"
+    (click)="goBack()"
   ></button>
 </div>
-
 <div class="form-container">
   <p-card>
     <ng-template pTemplate="header">
-      <span>Add New Jewelry</span>
+      <span>{{ isEditMode ? "Edit Jewelry" : "Add New Jewelry" }}</span>
     </ng-template>
+    <div *ngIf="isLoading" class="loading-container">
+      <p>Loading jewelry details...</p>
+    </div>
 
-    <form [formGroup]="jewelryForm" (ngSubmit)="onSubmit()">
+    <div *ngIf="error" class="error-message">
+      <p>{{ error }}</p>
+    </div>
+
+    <form
+      [formGroup]="jewelryForm"
+      (ngSubmit)="onSubmit()"
+      *ngIf="!isLoading && !error"
+    >
       <!-- Name -->
       <div class="p-field">
         <label for="name">Name</label>
@@ -97,20 +107,26 @@
       </div>
 
       <!-- File Upload (Drag & Drop) -->
-      <p-fileUpload
-        name="images[]"
-        [customUpload]="true"
-        mode="advanced"
-        [auto]="false"
-        [multiple]="true"
-        accept="image/*"
-        (onSelect)="onFileSelected($event)"
-        chooseLabel="Choose"
-        uploadLabel="Upload"
-        cancelLabel="Clear"
-        [showCancelButton]="true"
-        [showUploadButton]="false"
-      />
+      <div class="p-field">
+        <label>Images</label>
+        <p *ngIf="isEditMode" class="image-note">
+          Upload new images to replace existing ones
+        </p>
+        <p-fileUpload
+          name="images[]"
+          [customUpload]="true"
+          mode="advanced"
+          [auto]="false"
+          [multiple]="true"
+          accept="image/*"
+          (onSelect)="onFileSelected($event)"
+          chooseLabel="Choose"
+          uploadLabel="Upload"
+          cancelLabel="Clear"
+          [showCancelButton]="true"
+          [showUploadButton]="false"
+        ></p-fileUpload>
+      </div>
 
       <!-- Action Buttons -->
       <div
@@ -122,17 +138,16 @@
           type="button"
           label="Cancel"
           class="p-button-secondary"
-          (click)="goHome()"
+          (click)="goBack()"
         ></button>
         <button
           pButton
           type="submit"
-          label="Submit"
+          label="{{ isEditMode ? 'Update' : 'Submit' }}"
           [disabled]="jewelryForm.invalid"
         ></button>
       </div>
     </form>
   </p-card>
-
   <p-toast></p-toast>
 </div>

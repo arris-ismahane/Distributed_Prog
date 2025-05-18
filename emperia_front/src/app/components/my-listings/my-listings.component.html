@@ -1,0 +1,148 @@
+<div class="p-mb-3">
+  <button
+    pButton
+    label="Back to Home"
+    icon="pi pi-arrow-left"
+    class="p-button-secondary"
+    routerLink="/home"
+  ></button>
+</div>
+<div class="surface-ground p-3">
+  <div class="flex justify-content-end mb-3">
+    <app-profile-bubble></app-profile-bubble>
+  </div>
+  <h1 class="text-center text-3xl my-4">My Jewelry Listings</h1>
+
+  <div
+    class="flex flex-column md:flex-row justify-content-between align-items-center gap-3 mb-4"
+  >
+    <p-toast></p-toast>
+    <p-confirmDialog></p-confirmDialog>
+
+    <p-dropdown
+      [options]="categories"
+      [(ngModel)]="selectedCategoryId"
+      optionLabel="name"
+      optionValue="id"
+      placeholder="Select Category"
+      [showClear]="true"
+      class="w-full md:w-20rem"
+      (onChange)="onFiltersChanged()"
+    ></p-dropdown>
+
+    <p-dropdown
+      [options]="sortOptions"
+      [(ngModel)]="selectedSort"
+      optionLabel="label"
+      optionValue="value"
+      placeholder="Sort By"
+      class="w-full md:w-20rem"
+      (onChange)="onFiltersChanged()"
+    ></p-dropdown>
+
+    <button
+      pButton
+      label="Add Jewelry"
+      icon="pi pi-plus"
+      class="p-button-success"
+      routerLink="/create"
+    ></button>
+  </div>
+
+  <div *ngIf="isLoading" class="flex justify-content-center p-5">
+    <p-progressSpinner></p-progressSpinner>
+  </div>
+
+  <div *ngIf="error" class="surface-100 border-round p-4 mb-4 text-center">
+    <p class="text-red-500 font-medium mb-2">{{ error }}</p>
+    <button
+      pButton
+      label="Retry"
+      icon="pi pi-refresh"
+      class="p-button-sm p-button-danger"
+      (click)="refresh()"
+    ></button>
+  </div>
+
+  <div class="grid">
+    <div
+      class="col-12 sm:col-6 lg:col-4 xl:col-3"
+      *ngFor="let item of jewelries"
+    >
+      <p-card class="jewelry-card shadow-2 border-round p-3 h-full">
+        <ng-template pTemplate="content">
+          <div class="flex flex-column h-full relative">
+            <!-- Category Badge -->
+            <div
+              class="category-name mb-2 text-sm text-color-secondary font-semibold"
+            >
+              {{ item.category.name }}
+            </div>
+
+            <!-- Image -->
+            <div
+              class="jewelry-img-container mb-3 border-round overflow-hidden"
+            >
+              <p-image
+                [src]="getImageSrc(item.images[0])"
+                alt="{{ item.name }}"
+                [preview]="true"
+                imageClass="w-full h-full object-cover"
+              ></p-image>
+            </div>
+
+            <!-- Name and Price Row -->
+            <div
+              class="flex justify-content-between align-items-center mb-2 px-1"
+            >
+              <div class="text-lg font-semibold text-900">{{ item.name }}</div>
+              <div class="text-base font-bold text-green-600">
+                {{ item.price | currency }}
+              </div>
+            </div>
+
+            <!-- Listing Status (Could add a tag showing if active or not) -->
+            <div class="mb-2 text-sm">
+              <span class="bg-green-100 text-green-700 px-2 py-1 border-round"
+                >Active</span
+              >
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="grid grid-cols-2 gap-2 pt-3 mt-auto">
+              <button
+                pButton
+                label="Edit"
+                icon="pi pi-pencil"
+                class="p-button-sm p-button-outlined w-full"
+                [routerLink]="['/edit', item.id]"
+              ></button>
+              <button
+                pButton
+                label="Delete"
+                icon="pi pi-trash"
+                class="p-button-sm p-button-danger p-button-outlined w-full"
+                (click)="confirmDelete(item)"
+              ></button>
+            </div>
+          </div>
+        </ng-template>
+      </p-card>
+    </div>
+  </div>
+
+  <div
+    *ngIf="!isLoading && !error && jewelries.length === 0"
+    class="text-center p-5 text-color-secondary"
+  >
+    <i class="pi pi-box text-4xl mb-3"></i>
+    <p class="text-xl mt-2">You haven't listed any jewelry items yet</p>
+    <button
+      pButton
+      label="Create Your First Listing"
+      icon="pi pi-plus"
+      class="p-button-success mt-3"
+      routerLink="/create"
+    ></button>
+  </div>
+</div>

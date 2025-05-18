@@ -13,10 +13,27 @@ export class JewelryService {
 
   constructor(private http: HttpClient) {}
 
-  getJewleries(): Observable<Jewelry[]> {
-    return this.http.get<Jewelry[]>(this.baseUrl);
+  getJewleries(
+    owned: boolean = false,
+    categoryId?: number,
+    sortBy: string = 'creationDate',
+    order: string = 'asc'
+  ): Observable<Jewelry[]> {
+    // Create a params object with the required parameters
+    let params: any = {
+      owned: owned.toString(), // Convert boolean to string for URL parameters
+      sortBy,
+      order
+    };
+  
+    // Only add categoryId if it's defined
+    if (categoryId !== undefined && categoryId !== null) {
+      params.categoryId = categoryId.toString(); // Convert to string for URL parameters
+    }
+  
+    // Make the HTTP request with the parameters
+    return this.http.get<Jewelry[]>(this.baseUrl, { params });
   }
-
   getJewleryById(id: number): Observable<Jewelry> {
     return this.http.get<Jewelry>(`${this.baseUrl}/${id}`);
   }
