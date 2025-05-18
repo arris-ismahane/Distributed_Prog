@@ -47,7 +47,7 @@ public class EmperiaUserController {
     }
     @GetMapping("/username/{username}")
     public EmperiaUser getEmperiaUserByUsername(@PathVariable String username) {
-        String url = databaseServiceURL + USER_API_PATH + "/username" + username;
+        String url = databaseServiceURL + USER_API_PATH + "/username/" + username;
         return restTemplate.getForObject(url, EmperiaUser.class);
     }
 

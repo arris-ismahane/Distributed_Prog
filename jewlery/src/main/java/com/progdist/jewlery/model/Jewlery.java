@@ -31,4 +31,6 @@ public class Jewlery extends BasicEntity {
     @Lob
     @ElementCollection(fetch = FetchType.EAGER)
     private List<byte[]> images;
+    @ManyToOne(optional = false) 
+    private EmperiaUser user;
 }
